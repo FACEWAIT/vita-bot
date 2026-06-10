@@ -323,6 +323,14 @@ def cancel_kb(ctx):
         [InlineKeyboardButton(t(ctx, "btn_cancel"), callback_data="cancel_order")],
     ])
 
+def ugc_start_kb(ctx):
+    lang = ctx.user_data.get("lang", "uz")
+    label = "✅ Anketani to'ldirish" if lang == "uz" else "✅ Заполнить анкету"
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton(label, callback_data="ugc_begin")],
+        [InlineKeyboardButton(t(ctx, "btn_cancel"), callback_data="cancel_ugc")],
+    ])
+
 def ugc_cancel_kb(ctx):
     return InlineKeyboardMarkup([
         [InlineKeyboardButton(t(ctx, "btn_cancel"), callback_data="cancel_ugc")],
@@ -462,7 +470,15 @@ async def ugc_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     await query.edit_message_text(
-        t(context, "ugc_welcome"), parse_mode="Markdown", reply_markup=ugc_cancel_kb(context),
+        t(context, "ugc_welcome"), parse_mode="Markdown", reply_markup=ugc_start_kb(context),
+    )
+    return UGC_NAME
+
+async def ugc_begin(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    await query.edit_message_text(
+        t(context, "ugc_ask_name"), parse_mode="Markdown", reply_markup=ugc_cancel_kb(context),
     )
     return UGC_NAME
 
@@ -574,7 +590,10 @@ async def run_bot():
     ugc_conv = ConversationHandler(
         entry_points=[CallbackQueryHandler(ugc_start, pattern="^ugc_start$")],
         states={
-            UGC_NAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, ugc_get_name)],
+            UGC_NAME: [
+                CallbackQueryHandler(ugc_begin, pattern="^ugc_begin$"),
+                MessageHandler(filters.TEXT & ~filters.COMMAND, ugc_get_name),
+            ],
             UGC_AGE: [MessageHandler(filters.TEXT & ~filters.COMMAND, ugc_get_age)],
             UGC_CITY: [MessageHandler(filters.TEXT & ~filters.COMMAND, ugc_get_city)],
             UGC_INSTAGRAM: [MessageHandler(filters.TEXT & ~filters.COMMAND, ugc_get_instagram)],
