@@ -65,9 +65,9 @@ T = {
         ),
         "faq_price": (
             "💰 *Narxlar:*\n\n"
-            "🧪 *Sinov paketi* _(10 ta shisha)_\n"
-            "5 ta × 200 ml + 5 ta × 300 ml\n"
-            "~~145 000~~ → *116 000 so'm* _(−20% chegirma)_\n\n"
+            "🧪 *Sinov paketi* _(7 ta shisha)_\n"
+            "7 ta × 300 ml\n"
+            "~~119 000 \n\n"
             "━━━━━━━━━━━━━━━━\n\n"
             "📦 *To'liq kurs — 3 oy* _(90 ta shisha)_\n"
             "45 ta × 200 ml + 45 ta × 300 ml\n"
